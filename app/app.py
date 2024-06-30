@@ -24,10 +24,10 @@ def main():
             PubMed Screener is a ChatGPT & PubMed powered insight generator from biomedical abstracts. 
 
             #### Example scientific questions
-            - "I'm interested in research on the use of CRISPR technology for enhancing gene therapy in neurodegenerative diseases."
-            - "I want to find articles discussing the role of gut microbiota in modulating immune responses in autoimmune disorders."
-            - "I need information on the development of novel drug delivery systems using nanotechnology for targeted cancer therapy."
-            - "What is the current understanding of the genetic factors influencing susceptibility to infectious diseases in pediatric populations?"
+            - How can advanced imaging techniques and biomarkers be leveraged for early diagnosis and monitoring of disease progression in neurodegenerative disorders?
+            - What are the potential applications of stem cell technology and regenerative medicine in the treatment of neurodegenerative diseases, and what are the associated challenges?
+            - What are the roles of gut microbiota and the gut-brain axis in the pathogenesis of type 1 and type 2 diabetes, and how can these interactions be modulated for therapeutic benefit?
+            - What are the molecular mechanisms underlying the development of resistance to targeted cancer therapies, and how can these resistance mechanisms be overcome?
         """)
 
     # This is the chatbot component

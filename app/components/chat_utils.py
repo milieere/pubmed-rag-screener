@@ -13,7 +13,7 @@ class ChatAgent:
         - prompt (ChatPromptTemplate): The chat prompt template.
         - llm (Runnable): The language model runnable.
         """
-        self.msgs = StreamlitChatMessageHistory(key="chat_history")
+        self.history = StreamlitChatMessageHistory(key="chat_history")
         self.llm = llm
         self.prompt = prompt
         self.chain = self.setup_chain()
@@ -28,7 +28,7 @@ class ChatAgent:
         chain = self.prompt | self.llm
         return RunnableWithMessageHistory(
             chain,
-            lambda session_id: self.msgs,
+            lambda session_id: self.history,
             input_messages_key="question",
             history_messages_key="history",
         )
@@ -38,9 +38,9 @@ class ChatAgent:
         Display messages in the chat interface.
         If no messages are present, adds a default AI message.
         """
-        if len(self.msgs.messages) == 0:
-            self.msgs.add_ai_message("How can I help you?")
-        for msg in self.msgs.messages:
+        if len(self.history.messages) == 0:
+            self.history.add_ai_message("How can I help you?")
+        for msg in self.history.messages:
             st.chat_message(msg.type).write(msg.content)
 
     def start_conversation(self):
