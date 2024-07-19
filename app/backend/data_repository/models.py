@@ -1,8 +1,9 @@
+from typing import Optional
 from pydantic import BaseModel
 
 
 class ScientificAbstract(BaseModel):
-    doi: str
-    title: str
-    author: str
+    doi: Optional[str]
+    title: Optional[str]
+    authors: Optional[list]
     abstract_content: str

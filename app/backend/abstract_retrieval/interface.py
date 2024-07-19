@@ -8,4 +8,4 @@ class AbstractRetriever(Protocol):
     @abstractmethod
     def get_abstract_data(self, scientist_question: str) -> List[ScientificAbstract]:
         """ Retrieve a list of scientific abstracts based on a given query. """
-        pass
+        raise NotImplementedError
