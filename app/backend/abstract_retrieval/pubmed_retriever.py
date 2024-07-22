@@ -24,6 +24,7 @@ class PubMedAbstractRetriever(AbstractRetriever):
                 doi=abstract.doi,
                 title=abstract.title,
                 authors=abstract.authors,
+                year=abstract.year,
                 abstract_content=abstract.abstract
             )
             scientific_abstracts.append(abstract_formatted)
