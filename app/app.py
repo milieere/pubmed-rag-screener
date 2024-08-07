@@ -1,6 +1,6 @@
 import streamlit as st
 from components.chat_utils import ChatAgent
-from components.prompts import chat_prompt_template
+from components.chat_prompts import chat_prompt_template
 from components.llm import llm
 
 def main():
