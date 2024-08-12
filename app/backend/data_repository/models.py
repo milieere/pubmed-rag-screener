@@ -5,7 +5,7 @@ from pydantic import BaseModel
 class ScientificAbstract(BaseModel):
     doi: Optional[str] = None
     title: Optional[str] = None
-    authors: Optional[list] = None
+    authors: Optional[str] = None
     year: Optional[int] = None
     abstract_content: str
 

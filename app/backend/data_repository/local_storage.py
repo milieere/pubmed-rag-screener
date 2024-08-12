@@ -1,6 +1,6 @@
 import json
 import os
-import time
+import re
 import shutil
 from typing import Dict, List
 from backend.data_repository.models import UserQueryRecord, ScientificAbstract
@@ -9,15 +9,33 @@ from config.logging_config import get_logger
 
 
 class LocalJSONStore(UserQueryDataStore):
-    """ For local testing, to simulate database via local JSON files. """
+    """ 
+    For local testing, to simulate database via local JSON files. 
+    """
+
     def __init__(self, storage_folder_path: str):
         self.storage_folder_path = storage_folder_path
         self.index_file_path = os.path.join(storage_folder_path, 'index.json')
         self.logger = get_logger(__name__)
         self.metadata_index = None
 
+    def get_new_query_id(self):
+        try:
+            with open(self.index_file_path, 'r') as file:
+                data = json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            data = {}
+        keys = [k for k in data.keys() if k.startswith('query_')]
+        if not keys:
+            return 'query_1'
+        numbers = [int(k.split('_')[-1]) for k in keys]
+        max_number = max(numbers)
+        return f'query_{max_number + 1}'
+
     def read_dataset(self, query_id: str) -> List[ScientificAbstract]:
-        """ Read dataset containing abstracts from local storage. """
+        """ 
+        Read dataset containing abstracts from local storage. 
+        """
         try:
             with open(f'{self.storage_folder_path}/{query_id}/abstracts.json', 'r') as file:
                 data = json.load(file)
@@ -26,13 +44,15 @@ class LocalJSONStore(UserQueryDataStore):
             self.logger.error(f'The JSON file for this query: {query_id} was not found.')
             raise FileNotFoundError('JSON file was not found.')
 
-    def save_dataset(self, query_id: str, data_object: List[ScientificAbstract], user_query_details: UserQueryRecord) -> None:
-        """ Save abstract dataset and query metadata to local storage and rebuild index. """
+    def save_dataset(self, query_id: str, abstracts_data: List[ScientificAbstract], user_query_details: UserQueryRecord) -> None:
+        """ 
+        Save abstract dataset and query metadata to local storage and rebuild index. 
+        """
         try:
             os.makedirs(f'{self.storage_folder_path}/{query_id}', exist_ok=True)
             
             with open(f"{self.storage_folder_path}/{query_id}/abstracts.json", "w") as file:
-                list_of_abstracts = [model.model_dump() for model in data_object]
+                list_of_abstracts = [model.model_dump() for model in abstracts_data]
                 json.dump(list_of_abstracts, file, indent=4)
 
             with open(f"{self.storage_folder_path}/{query_id}/query_details.json", "w") as file:
@@ -47,7 +67,9 @@ class LocalJSONStore(UserQueryDataStore):
             raise RuntimeError(f"Failed to save dataset due to an error: {e}")
         
     def delete_dataset(self, query_id: str) -> None:
-        """ Delete abstracts dataset and query metadata from local storage. """
+        """ 
+        Delete abstracts dataset and query metadata from local storage. 
+        """
         path_to_data = f'{self.storage_folder_path}/{query_id}'
         if os.path.exists(path_to_data):
             shutil.rmtree(path_to_data)
@@ -57,14 +79,19 @@ class LocalJSONStore(UserQueryDataStore):
             self.logger.warning(f"Directory '{path_to_data}' does not exist and cannot be deleted.")
 
     def get_list_of_queries(self) -> Dict[str, str]:
-        """ Get a dictionary containing query ID (as a key) and original user query (as a value) from the index. """
+        """ 
+        Get a dictionary containing query ID (as a key) and original user query (as a value) from the index. 
+        """
         return self.metadata_index
 
     def _rebuild_index(self) -> Dict[str, str]:
-        """ Rebuild the index from all query details files. """
+        """ 
+        Rebuild the index from all query details files, to serve for a lookup purposes.
+        """
         index = {}
         query_data_paths = [os.path.join(self.storage_folder_path, name) for name in os.listdir(self.storage_folder_path)
-                                    if os.path.isdir(os.path.join(self.storage_folder_path, name))]
+            if os.path.isdir(os.path.join(self.storage_folder_path, name))]
+        
         for query_data_path in query_data_paths:
             metadata_path = os.path.join(query_data_path, 'query_details.json')
             if os.path.exists(metadata_path):
@@ -73,6 +100,7 @@ class LocalJSONStore(UserQueryDataStore):
                     index[metadata['user_query_id']] = metadata['user_query']
             else:
                 self.logger.warning(f"No query_details.json file found in {query_data_path}")
+        
         with open(self.index_file_path, 'w') as file:
             json.dump(index, file, indent=4)
         self.metadata_index = index
