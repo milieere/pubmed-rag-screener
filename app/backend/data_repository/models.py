@@ -10,5 +10,6 @@ class ScientificAbstract(BaseModel):
     abstract_content: str
 
 class UserQueryRecord(BaseModel):
+    user_query_id: int
     user_query: str
-    abstracts: List[ScientificAbstract]
+    user_query_llm_simplified: Optional[str]
