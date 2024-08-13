@@ -2,6 +2,7 @@ from typing import List
 from metapub import PubMedFetcher
 from backend.data_repository.models import ScientificAbstract
 from backend.abstract_retrieval.interface import AbstractRetriever
+from backend.abstract_retrieval.pubmed_query_simplification import simplify_pubmed_query
 from config.logging_config import get_logger
 
 
@@ -10,8 +11,21 @@ class PubMedAbstractRetriever(AbstractRetriever):
         self.pubmed_fetch_object = pubmed_fetch_object
         self.logger = get_logger(__name__)
 
-    def _get_abstract_list(self, query: str) -> List[str]:
+    def _simplify_pubmed_query(self, query: str, simplification_function: callable = simplify_pubmed_query) -> str:
+        return simplification_function(query)
+
+    def _get_abstract_list(self, query: str, simplify_query: bool = True) -> List[str]:
         """ Fetch a list of PubMed IDs for the given query. """
+        if simplify_query:
+            self.logger.info(f'Trying to simplify scientist query {query}')
+            query_simplified = self._simplify_pubmed_query(query)
+
+            if query_simplified != query:
+                self.logger.info(f'Initial query simplified to: {query_simplified}')
+                query = query_simplified
+            else:
+                self.logger.info('Initial query is simple enough and does not need simplification.')
+
         self.logger.info(f'Searching abstracts for query: {query}')
         return self.pubmed_fetch_object.pmids_for_query(query)
 
@@ -37,8 +51,8 @@ class PubMedAbstractRetriever(AbstractRetriever):
         
         return scientific_abstracts
 
-    def get_abstract_data(self, scientist_question: str) -> List[ScientificAbstract]:
+    def get_abstract_data(self, scientist_question: str, simplify_query: bool = True) -> List[ScientificAbstract]:
         """  Retrieve abstract list for scientist query. """
-        pmids = self._get_abstract_list(scientist_question)
+        pmids = self._get_abstract_list(scientist_question, simplify_query)
         abstracts = self._get_abstracts(pmids)
         return abstracts

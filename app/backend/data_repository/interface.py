@@ -8,9 +8,10 @@ class UserQueryDataStore(ABC):
     """Repository for interaction with abstract database"""
 
     @abstractmethod 
-    def save_dataset(self, abstracts_data: List[ScientificAbstract], user_query_details: UserQueryRecord) -> None:
+    def save_dataset(self, abstracts_data: List[ScientificAbstract], user_query: str) -> str:
         """
         Save abstracts and details about the query to data storage.
+        Return string that corresponds to newly assigned query ID.
         """
         raise NotImplementedError
     

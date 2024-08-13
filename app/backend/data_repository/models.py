@@ -12,4 +12,3 @@ class ScientificAbstract(BaseModel):
 class UserQueryRecord(BaseModel):
     user_query_id: str
     user_query: str
-    user_query_llm_simplified: Optional[str] = None

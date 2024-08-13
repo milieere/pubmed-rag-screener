@@ -44,11 +44,17 @@ class LocalJSONStore(UserQueryDataStore):
             self.logger.error(f'The JSON file for this query: {query_id} was not found.')
             raise FileNotFoundError('JSON file was not found.')
 
-    def save_dataset(self, query_id: str, abstracts_data: List[ScientificAbstract], user_query_details: UserQueryRecord) -> None:
+    def save_dataset(self, abstracts_data: List[ScientificAbstract], user_query: str) -> str:
         """ 
-        Save abstract dataset and query metadata to local storage and rebuild index. 
+        Save abstract dataset and query metadata to local storage, rebuild index, and return query ID.
         """
         try:
+            query_id = self.get_new_query_id()
+            user_query_details = UserQueryRecord(
+                user_query_id=query_id, 
+                user_query=user_query
+            )
+
             os.makedirs(f'{self.storage_folder_path}/{query_id}', exist_ok=True)
             
             with open(f"{self.storage_folder_path}/{query_id}/abstracts.json", "w") as file:
@@ -61,6 +67,8 @@ class LocalJSONStore(UserQueryDataStore):
 
             self.logger.info(f"Data for query ID {query_id} saved successfully.")
             self._rebuild_index()  # Rebuild index after saving new data
+
+            return query_id
 
         except Exception as e:
             self.logger.error(f"Failed to save dataset for query ID {query_id}: {e}")
