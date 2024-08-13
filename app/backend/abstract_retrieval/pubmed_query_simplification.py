@@ -1,11 +1,10 @@
-
 from langchain_core.prompts import PromptTemplate
-from langchain_core.language_models.chat_models import BaseChatModel
+from components.llm import llm
 
 
-def simplify_pubmed_query(scientist_question: str, prompt_template: PromptTemplate, llm: BaseChatModel) -> str:
+def simplify_pubmed_query(scientist_question: str) -> str:
     """ Transform verbose queries to simplified queries for PubMed """
-    prompt_formatted_str = prompt_template.format(question=scientist_question)
+    prompt_formatted_str = pubmed_query_simplification_prompt.format(question=scientist_question)
     return llm.invoke(prompt_formatted_str).content
 
 pubmed_query_simplification_prompt = PromptTemplate.from_template("""
