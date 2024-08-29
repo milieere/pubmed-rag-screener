@@ -17,7 +17,7 @@ class LocalJSONStore(UserQueryDataStore):
         self.storage_folder_path = storage_folder_path
         self.index_file_path = os.path.join(storage_folder_path, 'index.json')
         self.logger = get_logger(__name__)
-        self.metadata_index = None
+        self.metadata_index = self._rebuild_index()
 
     def get_new_query_id(self):
         try:

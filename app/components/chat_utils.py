@@ -4,6 +4,7 @@ from langchain_core.runnables.base import Runnable
 from langchain_community.chat_message_histories import StreamlitChatMessageHistory
 from langchain_core.prompts import ChatPromptTemplate
 
+
 class ChatAgent:
     def __init__(self, prompt: ChatPromptTemplate, llm: Runnable):
         """

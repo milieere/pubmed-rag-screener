@@ -1,9 +1,9 @@
 import streamlit as st
-
+from backend.data_repository.interface import UserQueryDataStore
 
 class RenderDashboardHomepage():
 
-    def render_column_with_app_info(self):
+    def render_app_info(self):
         st.title("PubMed Screener")
         st.markdown("""
             PubMed Screener is a ChatGPT & PubMed powered insight generator from biomedical abstracts.
@@ -55,3 +55,10 @@ class RenderDashboardHomepage():
         
         st.text("")
     
+    def render_last_queries(self, data_repository: UserQueryDataStore):
+        query_options = data_repository.get_list_of_queries()
+        print(f'lalal: {query_options}')
+        if not query_options:
+            pass
+        else:
+            selected_query = st.selectbox('Select a past query', options=[value for value in query_options.values()])        
