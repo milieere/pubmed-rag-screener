@@ -54,11 +54,3 @@ class RenderDashboardHomepage():
             """, unsafe_allow_html=True)
         
         st.text("")
-    
-    def render_last_queries(self, data_repository: UserQueryDataStore):
-        query_options = data_repository.get_list_of_queries()
-        print(f'lalal: {query_options}')
-        if not query_options:
-            pass
-        else:
-            selected_query = st.selectbox('Select a past query', options=[value for value in query_options.values()])        
