@@ -10,7 +10,7 @@ chat_prompt_template = ChatPromptTemplate.from_messages(
             Answer the following scientific question: {question}, 
             using the following context retrieved from scientific articles: {retrieved_abstracts}.
 
-            The user might refer to the history of your conversation. Please, use the following history of messages for the context: {chat_history}
+            The user might refer to the history of your conversation. Please, use the following history of messages for the context as you see fit.
 
             The abstracts will come formatted in the following way: ABSTRACT TITLE: <abstract title>; ABSTRACT CONTENT: <abstract content>, ABSTRACT DOI: <abstract doi> (the content inside <> will be variable).
             In your answer, ALWAYS cite the abstract title and abstract DOI when citing a particular piece of information from that given abstract.
