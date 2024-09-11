@@ -96,6 +96,7 @@ class LocalJSONStore(UserQueryDataStore):
         """ 
         Rebuild the index from all query details files, to serve for a lookup purposes.
         """
+        os.makedirs(self.storage_folder_path, exist_ok=True)
         index = {}
         query_data_paths = [os.path.join(self.storage_folder_path, name) for name in os.listdir(self.storage_folder_path)
             if os.path.isdir(os.path.join(self.storage_folder_path, name))]

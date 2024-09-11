@@ -4,7 +4,7 @@ from components.chat_utils import ChatAgent
 from components.chat_prompts import chat_prompt_template
 from components.llm import llm
 from components.layout_rendering import RenderDashboardHomepage
-from components.chat_prompts import ChatPromptTemplate
+from components.chat_prompts import qa_template
 from backend.abstract_retrieval.pubmed_retriever import PubMedAbstractRetriever
 from backend.data_repository.local_storage import LocalJSONStore
 from backend.rag_pipeline.chromadb_rag import ChromaDbRag
@@ -18,7 +18,6 @@ rag_client = ChromaDbRag(persist_directory="backend/chromadb_storage", embedding
 chat_agent = ChatAgent(prompt=chat_prompt_template, llm=llm)
 homepage_layout = RenderDashboardHomepage()
 
-data_repository.create_document_list(data_repository.read_dataset('query_5'))
 
 def main():
     st.set_page_config(
@@ -64,15 +63,22 @@ def main():
                         rag_client.create_vector_index_for_user_query(documents, query_id)
                         
                         # Display the answer to the user's initial question on the UI directly
-                        chat_agent.get_answer_from_llm(scientist_question, documents).content
+                        vector_index = rag_client.get_vector_index_by_user_query(query_id)
+                        retrieved_documents = chat_agent.retrieve_documents(vector_index, scientist_question)
+                        chain = qa_template | llm
+                        
+                        with col_a:
+                            st.write(chain.invoke({
+                                "question": scientist_question, 
+                                "retrieved_abstracts": retrieved_documents,
+                            }).content)
 
     # Beginning of the chatbot section
-    st.header("Chat with the abstracts")
-
     # Display list of queries to select one to have a conversation about
     query_options = data_repository.get_list_of_queries()
 
     if query_options:
+        st.header("Chat with the abstracts")
         selected_query = st.selectbox('Select a past query', options=list(query_options.values()), key='selected_query')
         
         if selected_query:
