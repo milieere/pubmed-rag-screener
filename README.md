@@ -1,4 +1,4 @@
-### Welcome to the PoC scientific ChatBot repo!
+# Welcome to the PoC scientific ChatBot repo!
 
 - This project features a scientific chatbot built with Streamlit, Langchain, and ChatGPT.
 - To run this project as it is, you will need access to AzureOpenAI ChatGPT model and ADA embeddings model.
@@ -7,7 +7,7 @@
     - /app/components/llm.py to edit LLM
     - /backend/rag_pipeline/embeddings.py
 
-#### Environment variables
+### Environment variables
 - Handle your environment variables (API keys and credentials) in a .env file and use python-dotenv to retrieve them. Example .env file (with AzureOpenAI variables) can look like this:
 
 ```
@@ -22,7 +22,7 @@ AZURE_ENDPOINT_EMBEDDINGS=<embeddings-endpoint>
 API_VERSION_EMBEDDINGS=<embeddings-api-version>
 ```
 
-#### Environment installation
+### Environment installation
 
 In the project root directory, create virtual environment using venv, and install dependencies from environment/requirements.txt file:
 
@@ -32,7 +32,7 @@ source venv/bin/activate
 pip install -r environment/requirements.txt
 ```
 
-#### Run application
+### Run application
 
 - Navigate to the app submodule of the repo `cd app`
 - Run the streamlit application `streamlit run app.py`
