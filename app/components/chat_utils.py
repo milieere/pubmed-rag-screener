@@ -44,7 +44,7 @@ class ChatAgent:
             history_messages_key="history",
         )
 
-    def display_messages(self, selected_query: str):
+    def display_messages(self, selected_query: str) -> None:
         """
         Display messages in the chat interface.
         If no messages are present, adds a default AI message.
@@ -76,14 +76,14 @@ class ChatAgent:
             }, config
         )
     
-    def retrieve_documents(self, retriever: VectorStore, question: str, cut_off: int = 5):
+    def retrieve_documents(self, retriever: VectorStore, question: str, cut_off: int = 5) -> List[Document]:
         """
         Retrieve documents using similarity search 
         cut_off parameter controls how many results are retrieved (default is 5)
         """
         return retriever.similarity_search(question)[:cut_off]
 
-    def start_conversation(self, retriever: VectorStore, selected_query: str):
+    def start_conversation(self, retriever: VectorStore, selected_query: str) -> None:
         """
         Start a conversation in the chat interface.
         Displays messages, prompts user for input, and handles AI response.

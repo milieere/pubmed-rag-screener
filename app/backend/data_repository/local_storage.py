@@ -1,6 +1,5 @@
 import json
 import os
-import re
 import shutil
 from typing import Dict, List
 from backend.data_repository.models import UserQueryRecord, ScientificAbstract

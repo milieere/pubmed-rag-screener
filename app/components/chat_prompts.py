@@ -1,5 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, PromptTemplate
 
+
 chat_prompt_template = ChatPromptTemplate.from_messages(
     [
         ("system", "You are a knowledgeable expert chatbot in the biomedicine field."),

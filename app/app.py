@@ -1,10 +1,9 @@
 import streamlit as st
 from metapub import PubMedFetcher
 from components.chat_utils import ChatAgent
-from components.chat_prompts import chat_prompt_template
+from components.chat_prompts import chat_prompt_template, qa_template
 from components.llm import llm
 from components.layout_extensions import render_app_info
-from components.chat_prompts import qa_template
 from backend.abstract_retrieval.pubmed_retriever import PubMedAbstractRetriever
 from backend.data_repository.local_storage import LocalJSONStore
 from backend.rag_pipeline.chromadb_rag import ChromaDbRag
