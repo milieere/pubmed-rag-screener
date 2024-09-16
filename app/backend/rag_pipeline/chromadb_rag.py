@@ -2,6 +2,7 @@ from typing import List
 import chromadb
 from langchain.vectorstores import VectorStore
 from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores.utils import filter_complex_metadata
 from langchain_core.embeddings import Embeddings
 from langchain_core.documents.base import Document
 from backend.rag_pipeline.interface import RagWorkflow
@@ -27,6 +28,7 @@ class ChromaDbRag(RagWorkflow):
         Create Chroma vector index and set query ID as collection name.
         """
         self.logger.info(f'Creating vector index for {query_id}')
+        documents = filter_complex_metadata(documents)
         try:
             index = Chroma.from_documents(
                 documents, 

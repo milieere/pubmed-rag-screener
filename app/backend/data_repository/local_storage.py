@@ -1,6 +1,5 @@
 import json
 import os
-import re
 import shutil
 from typing import Dict, List
 from backend.data_repository.models import UserQueryRecord, ScientificAbstract
@@ -17,7 +16,7 @@ class LocalJSONStore(UserQueryDataStore):
         self.storage_folder_path = storage_folder_path
         self.index_file_path = os.path.join(storage_folder_path, 'index.json')
         self.logger = get_logger(__name__)
-        self.metadata_index = None
+        self.metadata_index = self._rebuild_index()
 
     def get_new_query_id(self):
         try:
@@ -96,6 +95,7 @@ class LocalJSONStore(UserQueryDataStore):
         """ 
         Rebuild the index from all query details files, to serve for a lookup purposes.
         """
+        os.makedirs(self.storage_folder_path, exist_ok=True)
         index = {}
         query_data_paths = [os.path.join(self.storage_folder_path, name) for name in os.listdir(self.storage_folder_path)
             if os.path.isdir(os.path.join(self.storage_folder_path, name))]
