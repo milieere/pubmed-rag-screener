@@ -94,5 +94,5 @@ class ChatAgent:
             documents = self.retrieve_documents(retriever, user_question)
             retrieved_abstracts = self.format_retreieved_abstracts_for_prompt(documents)
             st.chat_message("human").write(user_question)
-            response = self.get_answer_from_llm(selected_query, retrieved_abstracts)
+            response = self.get_answer_from_llm(user_question, retrieved_abstracts)
             st.chat_message("ai").write(response.content)

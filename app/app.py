@@ -27,7 +27,7 @@ def main():
     )
 
     # Define two columns - this will make layout split horizontally
-    column_logo, column_app_info = st.columns([1, 4])
+    column_logo, column_app_info, column_answer = st.columns([1, 4, 4])
 
     # Place the logo in the first column
     with column_logo:
@@ -38,15 +38,11 @@ def main():
 
         # Some app info includign example questions
         homepage_layout.render_app_info()
-        
-        # Sector to formulate scientific question and fetch abstracts
-        col_q, col_a = st.columns([1,1])
 
-        with col_q:
-            st.header("Enter your scientific question!")
-            placeholder_text = "Type your scientific question here..."
-            scientist_question = st.text_input("What is your question?", placeholder_text)
-            get_articles = st.button('Get articles & Answer')
+        st.header("Enter your scientific question!")
+        placeholder_text = "Type your scientific question here..."
+        scientist_question = st.text_input("What is your question?", placeholder_text)
+        get_articles = st.button('Get articles & Answer')
 
         with st.spinner('Fetching abstracts. This can take a while...'):
             if get_articles:
@@ -67,7 +63,9 @@ def main():
                         retrieved_documents = chat_agent.retrieve_documents(vector_index, scientist_question)
                         chain = qa_template | llm
                         
-                        with col_a:
+                        # Directly answer user's question
+                        with column_answer:
+                            st.markdown(f"##### Answer to your question: '{scientist_question}'")
                             st.write(chain.invoke({
                                 "question": scientist_question, 
                                 "retrieved_abstracts": retrieved_documents,
