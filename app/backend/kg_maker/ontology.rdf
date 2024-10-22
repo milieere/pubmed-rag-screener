@@ -1,0 +1,110 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <http://example.org/ontology#> .
+
+# Classes
+:Gene a rdfs:Class ;
+    rdfs:label "Gene" ;
+    rdfs:comment "Gene name without any qualifiers" .
+
+:Protein a rdfs:Class ;
+    rdfs:label "Protein" ;
+    rdfs:comment "Protein encoded by a gene" .
+
+:Disease a rdfs:Class ;
+    rdfs:label "Disease" ;
+    rdfs:comment "Name of a disease or pathological condition" .
+
+:Function a rdfs:Class ;
+    rdfs:label "Function" ;
+    rdfs:comment "Biological function or process associated with a gene or protein" .
+
+:Pathology a rdfs:Class ;
+    rdfs:label "Pathology" ;
+    rdfs:comment "Observed pathological effects or symptoms" .
+
+:Mutation a rdfs:Class ;
+    rdfs:label "Mutation" ;
+    rdfs:comment "Specific genetic mutation or variant" .
+
+:Pathway a rdfs:Class ;
+    rdfs:label "Pathway" ;
+    rdfs:comment "Biological pathway involving the gene or protein" .
+
+:CellType a rdfs:Class ;
+    rdfs:label "CellType" ;
+    rdfs:comment "Specific cell type where the gene is expressed or relevant" .
+
+:Experiment a rdfs:Class ;
+    rdfs:label "Experiment" ;
+    rdfs:comment "Experimental method or technique used in the study" .
+
+:Drug a rdfs:Class ;
+    rdfs:label "Drug" ;
+    rdfs:comment "Pharmaceutical compound or treatment" .
+
+:Biomarker a rdfs:Class ;
+    rdfs:label "Biomarker" ;
+    rdfs:comment "Biological marker associated with the gene or disease" .
+
+# Properties
+:encodes a rdf:Property ;
+    rdfs:label "ENCODES" ;
+    rdfs:domain :Gene ;
+    rdfs:range :Protein .
+
+:associatedWith a rdf:Property ;
+    rdfs:label "ASSOCIATED_WITH" ;
+    rdfs:domain [ a owl:Class ; owl:unionOf (:Gene :Protein) ] ;
+    rdfs:range :Disease .
+
+:hasFunction a rdf:Property ;
+    rdfs:label "HAS_FUNCTION" ;
+    rdfs:domain [ a owl:Class ; owl:unionOf (:Gene :Protein) ] ;
+    rdfs:range :Function .
+
+:causes a rdf:Property ;
+    rdfs:label "CAUSES" ;
+    rdfs:domain [ a owl:Class ; owl:unionOf (:Gene :Mutation) ] ;
+    rdfs:range :Pathology .
+
+:participatesIn a rdf:Property ;
+    rdfs:label "PARTICIPATES_IN" ;
+    rdfs:domain [ a owl:Class ; owl:unionOf (:Gene :Protein) ] ;
+    rdfs:range :Pathway .
+
+:expressedIn a rdf:Property ;
+    rdfs:label "EXPRESSED_IN" ;
+    rdfs:domain :Gene ;
+    rdfs:range :CellType .
+
+:studiedBy a rdf:Property ;
+    rdfs:label "STUDIED_BY" ;
+    rdfs:domain [ a owl:Class ; owl:unionOf (:Gene :Protein :Disease) ] ;
+    rdfs:range :Experiment .
+
+:interactsWith a rdf:Property ;
+    rdfs:label "INTERACTS_WITH" ;
+    rdfs:domain :Protein ;
+    rdfs:range :Protein .
+
+:regulates a rdf:Property ;
+    rdfs:label "REGULATES" ;
+    rdfs:domain [ a owl:Class ; owl:unionOf (:Gene :Protein) ] ;
+    rdfs:range [ a owl:Class ; owl:unionOf (:Gene :Protein) ] .
+
+:targets a rdf:Property ;
+    rdfs:label "TARGETS" ;
+    rdfs:domain :Drug ;
+    rdfs:range [ a owl:Class ; owl:unionOf (:Gene :Protein) ] .
+
+:indicates a rdf:Property ;
+    rdfs:label "INDICATES" ;
+    rdfs:domain :Biomarker ;
+    rdfs:range [ a owl:Class ; owl:unionOf (:Disease :Pathology) ] .
+
+:hasVariant a rdf:Property ;
+    rdfs:label "HAS_VARIANT" ;
+    rdfs:domain :Gene ;
+    rdfs:range :Mutation .
