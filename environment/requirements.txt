@@ -6,3 +6,6 @@ python-dotenv==1.0.1
 pydantic==2.8.2
 metapub==0.5.12
 chromadb==0.4.24
+
+knowledge-graph-maker==0.2.1
+neo4j-graphrag==1.1.0
