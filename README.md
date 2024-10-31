@@ -1,5 +1,9 @@
 # Welcome to the PoC scientific ChatBot repo!
 
+<p align="center">
+  <img src="assets/pubmed_screener.png" width="500" alt="PubMed Screener">
+</p>
+
 - This project features a scientific chatbot built with Streamlit, Langchain, and ChatGPT.
 - To run this project as it is, you will need access to AzureOpenAI ChatGPT model and ADA embeddings model.
 - Alternatively, you can switch the LLM to any other LLM model available via langchain interfaces (i.e. ChatGPT and embedding models available via OpenAI directly).
