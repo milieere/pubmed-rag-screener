@@ -6,7 +6,7 @@ from dotenv import dotenv_values
 config = dotenv_values(".env")
 
 class AzureOpenAIClient(LLMClient):
-    
+
     def __init__(
         self, temperature=0
     ):
