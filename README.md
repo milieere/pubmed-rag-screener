@@ -28,12 +28,13 @@ API_VERSION_EMBEDDINGS=<embeddings-api-version>
 
 ### Environment installation
 
-In the project root directory, create virtual environment using venv, and install dependencies from environment/requirements.txt file:
+In the project root directory, create virtual environment and install dependencies using uv:
 
 ```
 python -m venv venv
 source venv/bin/activate
-pip install -r environment/requirements.txt
+pip install uv
+uv pip install -r requirements.txt
 ```
 
 ### Run application
